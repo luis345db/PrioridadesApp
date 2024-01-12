@@ -1,6 +1,7 @@
 using PrioridadesApp.Components;
 using Microsoft.EntityFrameworkCore;
 using PrioridadesApp.DAL;
+using PrioridadesApp.BLL;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
     var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
     builder.Services.AddDbContext<PrioridadContex>(Options => Options.UseSqlite(ConStr));
+
+    builder.Services.AddScoped<PrioridadesBLL>();
 }
 var app = builder.Build();
 
