@@ -1,11 +1,17 @@
 using PrioridadesApp.Components;
+using Microsoft.EntityFrameworkCore;
+using PrioridadesApp.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
+{
+    // Add services to the container.
+    builder.Services.AddRazorComponents()
+        .AddInteractiveServerComponents();
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
+    builder.Services.AddDbContext<PrioridadContex>(Options => Options.UseSqlite(ConStr));
+}
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
