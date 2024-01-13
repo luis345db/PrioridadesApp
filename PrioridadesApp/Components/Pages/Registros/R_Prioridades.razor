@@ -1,0 +1,77 @@
+﻿@page "/R_Prioridades"
+@page "/R_Prioridades/{PrioridadId:int}";
+@rendermode InteractiveServer
+
+
+@inject PrioridadesBLL prioridadesBLL;
+<EditForm Model="prioridad" OnValidSubmit="Guardar">
+
+</EditForm>
+
+@code {
+    public int PrioridadId { get; set; }
+
+    public Prioridades prioridad { get; set; } = new Prioridades();
+
+    private bool Existe = false;
+
+    private string Mensaje = "20";
+
+
+    protected override void OnInitialized()
+    {
+        if(PrioridadId > 0)
+        {
+            this.prioridad.PriodidadID = PrioridadId;
+            this.Buscar();
+        }
+    }
+
+    void Buscar()
+    {
+        var prioridadEncontrada = prioridadesBLL.Buscar(prioridad.PriodidadID);
+        if (prioridadEncontrada != null)
+        {
+            this.prioridad = prioridadEncontrada;
+        }
+    }
+
+    void Nuevo()
+    {
+        this.prioridad = new Prioridades();
+    }
+
+    public bool Validar()
+    {
+        Existe = (prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower() && p.PriodidadID != prioridad.PriodidadID).Any());
+        return Existe;
+    }
+
+    void Guardar()
+    {
+        if (!Validar())
+        {
+            return;
+        }
+        if (prioridadesBLL.Guardar(this.prioridad))
+        {
+            this.Nuevo();
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = prioridadesBLL.Eliminar(prioridad.PriodidadID);
+        if (eliminado)
+        {
+            Mensaje = "Se elimino Correctamente";
+            Nuevo();
+        }
+        else
+        {
+            Mensaje = "No se Puedo eliminar";
+        }
+    }
+
+
+}
