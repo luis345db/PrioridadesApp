@@ -59,19 +59,8 @@
         }
     }
 
-    public async Task Eliminar()
-    {
-        var eliminado = prioridadesBLL.Eliminar(prioridad.PriodidadID);
-        if (eliminado)
-        {
-            Mensaje = "Se elimino Correctamente";
-            Nuevo();
-        }
-        else
-        {
-            Mensaje = "No se Puedo eliminar";
-        }
-    }
+
+
 
 
 }
