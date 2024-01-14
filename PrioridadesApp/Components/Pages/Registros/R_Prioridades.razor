@@ -1,15 +1,47 @@
 ﻿@page "/R_Prioridades"
-@page "/R_Prioridades/{PrioridadId:int}";
+@page "/R_Prioridades/{PrioridadID:int}";
 @rendermode InteractiveServer
 
 
 @inject PrioridadesBLL prioridadesBLL;
 <EditForm Model="prioridad" OnValidSubmit="Guardar">
-
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Prioridad</h1>
+        </div>
+        <div class="card-body">
+            <label>ID:</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="prioridad.PriodidadID" class="id-input"></InputNumber>
+                <button type="button" class="bi bi-binoculars-fill" @onclick="Buscar"></button>
+            </div>
+            <div>
+                <label>Descripci&oacute;n:</label>
+                <InputText @bind-Value="prioridad.Descripcion" class="form-control"></InputText>
+                <ValidationMessage For="@(() => prioridad.Descripcion)" />
+                @if (Existe)
+                {
+                    <p class="text-danger">Ya existe una Prioridad con esta descripción.</p>
+                }
+            </div>
+            <div>
+                <label>Dias compromiso:</label>
+                <InputNumber @bind-Value="prioridad.DiasComprometidos" class="form-control"></InputNumber>
+                <ValidationMessage For="@(() => prioridad.DiasComprometidos)" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="bi bi-file-earmark-diff-fill" /></button>
+            <button type="submit" class="btn btn-success">Guardar <i class="bi bi-floppy-fill" /></button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="bi bi-trash-fill" /></button>
+        </div>
+    </div>
 </EditForm>
 
 @code {
-    public int PrioridadId { get; set; }
+
+    [Parameter]
+     public int PrioridadId { get; set; }
 
     public Prioridades prioridad { get; set; } = new Prioridades();
 
@@ -26,7 +58,7 @@
             this.Buscar();
         }
     }
-
+    
     void Buscar()
     {
         var prioridadEncontrada = prioridadesBLL.Buscar(prioridad.PriodidadID);
@@ -43,13 +75,14 @@
 
     public bool Validar()
     {
-        Existe = (prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower() && p.PriodidadID != prioridad.PriodidadID).Any());
+        Existe = (prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower() 
+        && p.PriodidadID != prioridad.PriodidadID).Any());
         return Existe;
     }
 
     void Guardar()
     {
-        if (!Validar())
+        if (Validar())
         {
             return;
         }
@@ -59,8 +92,19 @@
         }
     }
 
-
-
+    public async Task Eliminar()
+    {
+        var eliminado = prioridadesBLL.Eliminar(prioridad.PriodidadID);
+        if (eliminado)
+        {
+            Mensaje = "Se elimino Correctamente";
+            Nuevo();
+        }
+        else
+        {
+            Mensaje = "No se Puedo eliminar";
+        }
+    }
 
 
 }

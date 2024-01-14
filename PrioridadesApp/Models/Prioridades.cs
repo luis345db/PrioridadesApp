@@ -8,7 +8,7 @@ namespace PrioridadesApp.Models
         public int PriodidadID { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]
 
-        public string Descripcion { get; set; }
+        public string? Descripcion { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int DiasComprometidos { get; set; }
     }

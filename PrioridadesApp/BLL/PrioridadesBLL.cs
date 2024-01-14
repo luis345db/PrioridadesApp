@@ -42,9 +42,10 @@ namespace PrioridadesApp.BLL
             }
         }
 
-        public bool Eliminar(Prioridades prioridad)
+        public bool Eliminar(int id)
         {
-            _contexto.Prioridades.Remove(prioridad);
+            var priority = _contexto.Prioridades.Find(id);
+           _contexto.Prioridades.Remove(priority);
             return _contexto.SaveChanges() > 0;
         }
 

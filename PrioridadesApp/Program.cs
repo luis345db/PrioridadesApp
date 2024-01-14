@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<PrioridadContex>(Options => Options.UseSqlite(ConStr));
 
     builder.Services.AddScoped<PrioridadesBLL>();
+
 }
 var app = builder.Build();
 
