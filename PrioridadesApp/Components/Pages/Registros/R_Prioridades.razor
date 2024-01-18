@@ -1,9 +1,8 @@
 ﻿@page "/R_Prioridades"
 @page "/R_Prioridades/{PrioridadID:int}";
 @rendermode InteractiveServer
-
-
 @inject PrioridadesBLL prioridadesBLL;
+
 <EditForm Model="prioridad" OnValidSubmit="Guardar">
     <div class="card">
         <div class="card-header">
@@ -28,6 +27,10 @@
                 <label>Dias compromiso:</label>
                 <InputNumber @bind-Value="prioridad.DiasComprometidos" class="form-control"></InputNumber>
                 <ValidationMessage For="@(() => prioridad.DiasComprometidos)" />
+                @if (prioridad.DiasComprometidos <= 0)
+                {
+                    <p class="text-danger">Agregue una Cantidad de Dias Comprometidos.</p>
+                }
             </div>
         </div>
         <div class="card-footer">
@@ -41,13 +44,13 @@
 @code {
 
     [Parameter]
-     public int PrioridadId { get; set; }
+    public int PrioridadId { get; set; }
 
     public Prioridades prioridad { get; set; } = new Prioridades();
 
     private bool Existe = false;
 
-    private string Mensaje = "20";
+    private string Mensaje;
 
 
     protected override void OnInitialized()
@@ -58,10 +61,10 @@
             this.Buscar();
         }
     }
-    
-    void Buscar()
+
+    public async Task Buscar()
     {
-        var prioridadEncontrada = prioridadesBLL.Buscar(prioridad.PriodidadID);
+        var prioridadEncontrada = await prioridadesBLL.Buscar(prioridad.PriodidadID);
         if (prioridadEncontrada != null)
         {
             this.prioridad = prioridadEncontrada;
@@ -73,20 +76,20 @@
         this.prioridad = new Prioridades();
     }
 
-    public bool Validar()
+    public async Task<bool> Validar()
     {
-        Existe = (prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower() 
-        && p.PriodidadID != prioridad.PriodidadID).Any());
+        Existe = (await prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower()
+         && p.PriodidadID != prioridad.PriodidadID)).Any();
         return Existe;
     }
 
-    void Guardar()
+    public async Task  Guardar()
     {
-        if (Validar())
+        if (await Validar())
         {
             return;
         }
-        if (prioridadesBLL.Guardar(this.prioridad))
+        if (await prioridadesBLL.Guardar(this.prioridad))
         {
             this.Nuevo();
         }
@@ -94,7 +97,7 @@
 
     public async Task Eliminar()
     {
-        var eliminado = prioridadesBLL.Eliminar(prioridad.PriodidadID);
+        var eliminado = await prioridadesBLL.Eliminar(prioridad.PriodidadID);
         if (eliminado)
         {
             Mensaje = "Se elimino Correctamente";
