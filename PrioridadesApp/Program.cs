@@ -11,9 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 
     var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
-    builder.Services.AddDbContext<PrioridadContex>(Options => Options.UseSqlite(ConStr));
+    builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
     builder.Services.AddScoped<PrioridadesBLL>();
+    builder.Services.AddScoped<ClientesBLL>();
 
 }
 var app = builder.Build();

@@ -7,8 +7,8 @@ namespace PrioridadesApp.BLL
 {
     public class PrioridadesBLL
     {
-        private readonly PrioridadContex _contexto;
-        public PrioridadesBLL(PrioridadContex contexto)
+        private readonly Contexto _contexto;
+        public PrioridadesBLL(Contexto contexto)
         {
             _contexto = contexto;
         }
@@ -66,13 +66,7 @@ namespace PrioridadesApp.BLL
         }
 
 
-        public bool Validar(Prioridades prioridades)
-        {
-            bool encontrado = (_contexto.Prioridades.Any(p => p.Descripcion!.ToLower()
-            == prioridades.Descripcion!.ToLower()));
-
-            return encontrado;
-        }
+        
     }
 
 }

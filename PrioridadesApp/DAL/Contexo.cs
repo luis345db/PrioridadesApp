@@ -3,12 +3,13 @@ using PrioridadesApp.Models;
 
 namespace PrioridadesApp.DAL
 {
-    public class PrioridadContex : DbContext
+    public class Contexto : DbContext
     {
-        public PrioridadContex(DbContextOptions<PrioridadContex> Options) : base(Options)
+        public Contexto(DbContextOptions<Contexto> Options) : base(Options)
         {
         }
 
         public DbSet<Prioridades> Prioridades { get; set; }
+        public DbSet<Clientes> Clientes { get; set;}
     }
 }
