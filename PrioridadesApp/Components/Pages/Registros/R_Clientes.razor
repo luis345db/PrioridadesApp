@@ -103,11 +103,11 @@
     {
         ExisteN = (await clientesBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
          && c.ClienteId != cliente.ClienteId)).Any();
-        return ExisteN;
-
         ExisteR = (await clientesBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
-         && c.ClienteId != cliente.ClienteId)).Any();
-        return ExisteR;
+       && c.ClienteId != cliente.ClienteId)).Any();
+        return ExisteN || ExisteN;
+
+       
     }
 
     public async Task Guardar()
