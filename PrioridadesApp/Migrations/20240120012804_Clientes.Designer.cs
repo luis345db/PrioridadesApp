@@ -10,14 +10,47 @@ using PrioridadesApp.DAL;
 namespace PrioridadesApp.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240112045249_Inicial ")]
-    partial class Inicial
+    [Migration("20240120012804_Clientes")]
+    partial class Clientes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+
+            modelBuilder.Entity("PrioridadesApp.Models.Clientes", b =>
+                {
+                    b.Property<int>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Celular")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RNC")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Telefono")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ClienteId");
+
+                    b.ToTable("Clientes");
+                });
 
             modelBuilder.Entity("PrioridadesApp.Models.Prioridades", b =>
                 {
