@@ -11,10 +11,10 @@ namespace PrioridadesApp.Models
         public string Nombres { get; set; }
 
         [Required(ErrorMessage = "El Campo {0} es Requerido")]
-        public int Telefono { get; set; }
+        public string Telefono { get; set; }
 
         [Required(ErrorMessage = "El Campo {0} es Requerido")]
-        public int Celular { get; set; }
+        public string Celular { get; set; }
 
         [Required(ErrorMessage = "El Campo {0} es Requerido")]
         public string RNC { get; set; }
