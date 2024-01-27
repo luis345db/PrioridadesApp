@@ -1,0 +1,63 @@
+﻿@page "/Delete"
+@page "/Delete/prioridadId={prioridadId:int}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject PrioridadesBLL prioridadesBLL;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Eliminar</PageTitle>
+
+<div class="container">
+	<div class="card shadow-lg">
+		
+		<div class="card-header">
+			<h3><strong>Delete</strong></h3>
+		</div>
+		
+		<div class="card-body col-5">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<h3><strong>¿Estas seguro de que quieres eliminar esta Prioridad?</strong></h3>
+			
+			<div class="mb-1">
+				<p class="mb-0">Id: @prioridad.PriodidadID</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Descripcion: @prioridad.Descripcion</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Dias Compromiso: @prioridad.DiasComprometidos</p>
+			</div>
+			<button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+			<button type="button" class="btn btn-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+		</div>
+		
+	</div>
+</div>
+
+@code {
+    [Parameter]
+    public int prioridadId { get; set; }
+    public Prioridades prioridad { get; set; } = new Prioridades();
+	private string Mensaje;
+	
+	 public async Task Eliminar()
+    {
+		var eliminar = await prioridadesBLL.Eliminar(prioridad);
+		if (eliminar)
+		{
+			Mensaje = "La Persona ha sido eliminada con exito";
+			await Task.Delay(2000);
+			IrAPaginaDestino();
+		}
+		else
+			Mensaje = "No se ha podido eliminar la persona correctamente";
+    }
+	void Nuevo()
+	{
+		this.prioridad = new Prioridades();
+	}
+	void IrAPaginaDestino()
+	{
+		NavigationManager.NavigateTo("/Details");
+	}
+}

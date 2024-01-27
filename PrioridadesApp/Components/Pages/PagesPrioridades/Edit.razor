@@ -1,0 +1,110 @@
+﻿@page "/Edit"
+@page "/Edit/prioridadId={prioridadId:int}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject PrioridadesBLL prioridadesBLL;
+
+
+<PageTitle>Editar</PageTitle>
+
+<EditForm Model="prioridad" OnValidSubmit="Modificar" FormName="formularioEdit">
+	<div class="container">
+		<div class="card shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>Editar</strong></h3>
+				<a href="/Details"><em>Details</em></a>
+			</div>
+			@*Body*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@*Id*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="form-label" for="prioridadId"><strong>Id:</strong></label>
+						<div class="input-group">
+							<InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriodidadID"></InputNumber>
+							<button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+						</div>
+					</div>
+				</div>
+				@*Nombre*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="form-label" for="descripcion"><strong>Nombre:</strong></label>
+						<InputText id="descripcion" class="form-control" @bind-Value="prioridad.Descripcion" placeholder="Escribe una descripcion "></InputText>
+					</div>
+				</div>
+				@*Teléfono*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="form-label" for="diascompromiso"><strong>Dias:</strong></label>
+						<InputNumber id="diascompromiso" class="form-control" @bind-Value="prioridad.DiasComprometidos" placeholder="Escriba dias de compromiso"></InputNumber>
+						
+					</div>
+				</div>
+			</div>
+			@*Footer*@
+			<div class="card-footer d-flex justify-content-center">
+				<button type="submit" class="btn btn-outline-primary">Modificar</button>
+			</div>
+		</div>
+	</div>
+	@mensaje
+</EditForm>
+
+@code {
+
+	[Parameter]
+	public int prioridadId { get; set; }
+	public Prioridades prioridad { get; set; } = new Prioridades();
+	public string mensaje { get; set; } = string.Empty;
+	private bool Existe = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (prioridadId > 0)
+			prioridad = await prioridadesBLL.Buscar(prioridadId);
+	}
+
+	public async Task Modificar()
+	{
+		if (await Validar())
+			mensaje = "Error, este nombre no esta disponible";
+		else
+		{
+			var modificar = await prioridadesBLL.Crear(prioridad);
+			if (modificar)
+				mensaje = "Los datos se ha actualizado con exito";
+			else
+				mensaje = "Los datos no han podido ser actualizados";
+		}
+	}
+
+	public async Task<bool> Validar()
+	{
+		Existe = (await prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower()
+			&& p.PriodidadID != prioridad.PriodidadID)).Any();
+		return Existe;
+	}
+
+	public async Task Buscar()
+	{
+		if (prioridad.PriodidadID <= 0)
+			mensaje = "No se aceptan Id menores que 1";
+
+		else
+		{
+			var buscar = await prioridadesBLL.Buscar(prioridad.PriodidadID);
+			if (buscar != null)
+			{
+				prioridad = buscar;
+				mensaje = "La persona ha sido encontrada con exito";
+			}
+			else
+				mensaje = $"No existe persona con el id {prioridad.PriodidadID}";
+		}
+	}
+
+}
