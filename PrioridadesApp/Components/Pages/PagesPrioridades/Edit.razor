@@ -1,5 +1,5 @@
-﻿@page "/Edit"
-@page "/Edit/prioridadId={prioridadId:int}"
+﻿@page "/P_Edit"
+@page "/P_Edit/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject PrioridadesBLL prioridadesBLL;
@@ -13,7 +13,7 @@
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Editar</strong></h3>
-				<a href="/Details"><em>Details</em></a>
+				<a href="/P_Details"><em>Details</em></a>
 			</div>
 			@*Body*@
 			<div class="card-body">
@@ -35,7 +35,7 @@
 						<InputText id="descripcion" class="form-control" @bind-Value="prioridad.Descripcion" placeholder="Escribe una descripcion "></InputText>
 					</div>
 				</div>
-				@*Teléfono*@
+			
 				<div class="mb-3">
 					<div class="col-4">
 						<label class="form-label" for="diascompromiso"><strong>Dias:</strong></label>

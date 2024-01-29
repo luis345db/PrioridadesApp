@@ -42,14 +42,16 @@ public class ClientesBLL
         }
     }
 
-    public async Task<bool>Eliminar(int id)
-    {
-        var cliente = _contexto.Clientes.Find(id);
-        _contexto.Clientes.Remove(cliente);
-        return await _contexto.SaveChangesAsync() > 0;
-    }
+	public async Task<bool> Eliminar(Clientes cliente)
+	{
+		var cantidad = await _contexto.Clientes
+			.Where(c => c.ClienteId == cliente.ClienteId)
+			.ExecuteDeleteAsync();
 
-    public async Task<Clientes?> Buscar(int clienteId)
+		return cantidad > 0;
+	}
+
+	public async Task<Clientes?> Buscar(int clienteId)
     {
         return await _contexto.Clientes
             .AsNoTracking()
@@ -63,5 +65,12 @@ public class ClientesBLL
             .AsNoTracking()
             .ToListAsync();
     }
+
+	public async Task<Clientes?> BuscarId(int clienteId)
+	{
+		return await _contexto.Clientes
+			.AsNoTracking()
+			.FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+	}
 }
 

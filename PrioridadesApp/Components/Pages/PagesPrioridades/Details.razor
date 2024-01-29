@@ -1,4 +1,4 @@
-﻿@page "/Details"
+﻿@page "/P_Details"
 @inject PrioridadesBLL prioridadesBLL
 @attribute [StreamRendering]
 
@@ -13,7 +13,7 @@
             <div class="d-flex align-items-start ">
 
                 
-                    <a href="/Create"><em>Crear</em></a>
+                    <a href="/C_Create"><em>Crear</em></a>
 
             </div>
         </div>
@@ -41,8 +41,8 @@
                             <td>@item.PriodidadID</td>
                             <td>@item.Descripcion</td>
                             <td>@item.DiasComprometidos</td>
-                            <td><a href="/Edit/prioridadId=@item.PriodidadID"><em>Editar</em></a></td>
-                            <td><a href="/Delete/prioridadId=@item.PriodidadID"><em>Eliminar</em></a></td>
+                            <td><a href="/P_Edit/prioridadId=@item.PriodidadID"><em>Editar</em></a></td>
+                            <td><a href="/P_Delete/prioridadId=@item.PriodidadID"><em>Eliminar</em></a></td>
                         </tr>
                     }
                 </tbody>

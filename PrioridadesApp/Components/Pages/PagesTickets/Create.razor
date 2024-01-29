@@ -1,0 +1,116 @@
+﻿@page "/T_Create"
+
+@inject TicketsBLL ticketsBLL
+@rendermode InteractiveServer
+
+
+<EditForm Model="ticket" OnValidSubmit="Crear">
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Tickets</h1>
+
+            <div class="d-flex align-items-start ">
+                <a href="/T_details"><em>Detalles</em></a>
+            </div>
+
+
+        </div>
+        <div class="card-body">
+            <label>IDTicket:</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="ticket.TicketId" class="id-input"></InputNumber>
+                <button type="button" class="bi bi-binoculars-fill" @onclick="Buscar"></button>
+            </div>
+            <div>
+                <label>Fecha:</label>
+                <InputText @bind-Value="ticket.Fecha" class="form-control"></InputText>
+
+
+               
+            </div>
+            <div>
+                <label>ClienteId:</label>
+                <InputNumber @bind-Value="ticket.ClienteId" class="form-control"></InputNumber>
+
+
+            </div>
+            <div>
+                <label>SistemaId:</label>
+                <InputNumber @bind-Value="ticket.SistemaId" class="form-control"></InputNumber>
+            </div>
+            <div>
+                <label>PrioridadId:</label>
+                <InputNumber @bind-Value="ticket.PriodidadID" class="form-control"></InputNumber>
+
+                @if (Existe)
+                {
+                    <p class="text-danger">Ya existe un ticket con esta prioridad.</p>
+                }
+            </div>
+            <div>
+                <label>SolicitadoPor:</label>
+                <InputText @bind-Value="ticket.SolicitadoPor" class="form-control"></InputText>
+
+
+            </div>
+            <div>
+                <label>Asunto:</label>
+                <InputText @bind-Value="ticket.Asunto" class="form-control"></InputText>
+
+
+            </div>
+            <div>
+                <label>Descripcion:</label>
+                <InputText @bind-Value="ticket.Descripcion" class="form-control"></InputText>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">Crear <i class="bi bi-floppy-fill" /></button>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    public Tickets ticket { get; set; } = new Tickets();
+    private bool Existe = false;
+    
+    public async Task Buscar()
+    {
+        var ticketEncontrado = await ticketsBLL.Buscar(ticket.TicketId);
+        if (ticketEncontrado != null)
+        {
+            this.ticket = ticketEncontrado;
+        }
+    }
+
+    void Nuevo()
+    {
+        this.ticket = new Tickets();
+    }
+
+    public async Task<bool> Validar()
+    {
+        
+        Existe = (await ticketsBLL.GetList(c => c.PriodidadID! == ticket.PriodidadID!
+       && c.TicketId != ticket.TicketId)).Any();
+        return Existe;
+
+
+    }
+
+    public async Task Crear()
+    {
+        if (await Validar())
+        {
+            return;
+        }
+        if (await ticketsBLL.Crear(this.ticket))
+        {
+            this.Nuevo();
+        }
+    }
+}

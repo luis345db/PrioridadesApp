@@ -1,12 +1,19 @@
-﻿@page "/R_Clientes"
-@page "/R_Clientes/{ClienteID:int}";
-@rendermode InteractiveServer
-@inject ClientesBLL clientesBLL;
+﻿@page "/C_Create"
 
-@*<EditForm Model="cliente" OnValidSubmit="Guardar">
+@inject ClientesBLL clienteBLL
+@rendermode InteractiveServer
+
+
+<EditForm Model="cliente" OnValidSubmit="Crear">
     <div class="card">
         <div class="card-header">
             <h1>Registro Clientes</h1>
+
+            <div class="d-flex align-items-start ">
+                <a href="/C_details"><em>Detalles</em></a>
+            </div>
+
+
         </div>
         <div class="card-body">
             <label>IDCliente:</label>
@@ -17,8 +24,8 @@
             <div>
                 <label>Nombres:</label>
                 <InputText @bind-Value="cliente.Nombres" class="form-control"></InputText>
-                
-                
+
+
                 @if (ExisteN)
                 {
                     <p class="text-danger">Ya existe un cliente con este Nombre.</p>
@@ -27,7 +34,7 @@
             <div>
                 <label>Telefono:</label>
                 <InputText @bind-Value="cliente.Telefono" class="form-control"></InputText>
-               
+
 
             </div>
             <div>
@@ -47,47 +54,31 @@
                 <label>Email:</label>
                 <InputText @bind-Value="cliente.Email" class="form-control"></InputText>
 
-                
+
             </div>
             <div>
                 <label>Direccion:</label>
                 <InputText @bind-Value="cliente.Direccion" class="form-control"></InputText>
 
-              
+
             </div>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="bi bi-file-earmark-diff-fill" /></button>
-            <button type="submit" class="btn btn-success"> Guardar<i class="bi bi-floppy-fill" /></button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="bi bi-trash-fill" /></button>
+            <button type="submit" class="btn btn-success">Crear <i class="bi bi-floppy-fill" /></button>
         </div>
     </div>
 </EditForm>
-*@
+
 
 @code {
-    [Parameter]
-    public int ClienteId { get; set; }
 
     public Clientes cliente { get; set; } = new Clientes();
-
+    private bool Existe = false;
     private bool ExisteN = false;
     private bool ExisteR = false;
-    private string Mensaje;
-    private string t = " ";
-
-    protected override void OnInitialized()
-    {
-        if (ClienteId > 0)
-        {
-            this.cliente.ClienteId = ClienteId;
-            this.Buscar();
-        }
-    }
-
     public async Task Buscar()
     {
-        var clienteEncontrado = await clientesBLL.Buscar(cliente.ClienteId);
+        var clienteEncontrado = await clienteBLL.Buscar(cliente.ClienteId);
         if (clienteEncontrado != null)
         {
             this.cliente = clienteEncontrado;
@@ -97,43 +88,28 @@
     void Nuevo()
     {
         this.cliente = new Clientes();
-
     }
 
     public async Task<bool> Validar()
     {
-        ExisteN = (await clientesBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
+        ExisteN = (await clienteBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
          && c.ClienteId != cliente.ClienteId)).Any();
-        ExisteR = (await clientesBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
+        ExisteR = (await clienteBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
        && c.ClienteId != cliente.ClienteId)).Any();
         return ExisteN || ExisteN;
 
-       
+
     }
 
-    public async Task Guardar()
+    public async Task Crear()
     {
         if (await Validar())
         {
             return;
         }
-        if (await clientesBLL.Guardar(this.cliente))
+        if (await clienteBLL.Guardar(this.cliente))
         {
             this.Nuevo();
         }
     }
-
-    /*ublic async Task Eliminar()
-    {
-        var eliminado = await clientesBLL.Eliminar(cliente.ClienteId);
-        if (eliminado)
-        {
-            Mensaje = "Se elimino Correctamente";
-            Nuevo();
-        }
-        else
-        {
-            Mensaje = "No se Puedo eliminar";
-        }
-    }*/
 }

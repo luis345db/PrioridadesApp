@@ -1,0 +1,75 @@
+﻿@page "/clientes"
+@inject ClientesBLL clientesBLL
+@attribute [StreamRendering]
+
+<PageTitle>Consulta Clientes</PageTitle>
+
+<div class=" container">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header">
+            <h3><strong>Consulta Clientes</strong></h3>
+            <div class="d-flex align-items-start ">
+
+                <div class="px-2">
+                    <a href="/C_Create"><em>Crear</em></a>
+
+                </div>
+                <a href="/C_Details"><em>Detalles</em></a>
+            </div>
+        </div>
+
+
+
+        <div class="table-responsive">
+
+
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombres</th>
+                        <th>Telefono</th>
+                        <th> Celular </th>
+                        <th>RNC</th>
+                        <th>Email</th>
+                        <th>Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ListaClientes)
+                    {
+                        <tr>
+                            <td>@item.ClienteId</td>
+                            <td>@item.Nombres</td>
+                            <td>@item.Telefono</td>
+                            <td>@item.Celular</td>
+                            <td>@item.RNC</td>
+                            <td>@item.Email</td>
+                            <td>@item.Direccion</td>
+
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public Clientes cliente { get; set; } = new Clientes();
+    public int filtrar { get; set; }
+    public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
+
+    protected override async void OnInitialized()
+    {
+        ListaClientes = await clientesBLL.GetList(l => true);
+    }
+
+
+}

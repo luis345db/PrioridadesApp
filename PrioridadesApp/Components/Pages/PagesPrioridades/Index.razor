@@ -13,10 +13,10 @@
             <div class="d-flex align-items-start " >
                
                 <div class="px-2">
-                    <a href="/Create"><em >Crear</em></a>
+                    <a href="/P_Create"><em >Crear</em></a>
                     
                 </div>
-                <a href="/details"><em>Detalles</em></a>
+                <a href="/P_Details"><em>Detalles</em></a>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
                  @foreach (var item in ListaPrioridades)
                     {
                         <tr>
-                            <td><a href="R_Clientes/@item.PriodidadID">@item.PriodidadID</a></td>
+                            <td>@item.PriodidadID</td>
                              <td>@item.Descripcion</td>
                             <td>@item.DiasComprometidos</td>
                    
