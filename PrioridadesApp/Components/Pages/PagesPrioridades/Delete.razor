@@ -39,18 +39,25 @@
     public int prioridadId { get; set; }
     public Prioridades prioridad { get; set; } = new Prioridades();
 	private string Mensaje;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (prioridadId > 0)
+			prioridad = await prioridadesBLL.BuscarId(prioridadId);
+	}
 	
 	 public async Task Eliminar()
     {
 		var eliminar = await prioridadesBLL.Eliminar(prioridad);
 		if (eliminar)
 		{
-			Mensaje = "La Persona ha sido eliminada con exito";
+			Mensaje = "La Prioridad ha sido eliminada con exito";
 			await Task.Delay(2000);
 			IrAPaginaDestino();
 		}
 		else
-			Mensaje = "No se ha podido eliminar la persona correctamente";
+			Mensaje = "No se ha podido eliminar la prioridad correctamente";
     }
 	void Nuevo()
 	{
@@ -58,6 +65,6 @@
 	}
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/Details");
+		NavigationManager.NavigateTo("/P_Details");
 	}
 }
