@@ -65,6 +65,12 @@ namespace PrioridadesApp.BLL
 				.ToListAsync();
 		}
 
+		public async Task<Tickets?> BuscarId(int ticketId)
+		{
+			return await _contexto.Tickets
+				.AsNoTracking()
+				.FirstOrDefaultAsync(c => c.TicketId == ticketId);
+		}
 
 
 	}

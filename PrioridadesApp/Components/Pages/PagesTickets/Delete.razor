@@ -55,17 +55,24 @@
 	public Tickets ticket { get; set; } = new Tickets();
 	private string Mensaje;
 
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (ticketId > 0)
+			ticket = await ticketsBLL.BuscarId(ticketId);
+	}
+
 	public async Task Eliminar()
 	{
 		var eliminar = await ticketsBLL.Eliminar(ticket);
 		if (eliminar)
 		{
-			Mensaje = "La Persona ha sido eliminada con exito";
+			Mensaje = "ha sido eliminado con exito";
 			await Task.Delay(2000);
 			IrAPaginaDestino();
 		}
 		else
-			Mensaje = "No se ha podido eliminar la persona correctamente";
+			Mensaje = "No se ha podido eliminar  correctamente";
 	}
 	void Nuevo()
 	{
