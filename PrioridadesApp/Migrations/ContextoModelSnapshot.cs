@@ -68,6 +68,42 @@ namespace PrioridadesApp.Migrations
 
                     b.ToTable("Prioridades");
                 });
+
+            modelBuilder.Entity("PrioridadesApp.Models.Tickets", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Fecha")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PriodidadID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SistemaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SolicitadoPor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TicketId");
+
+                    b.ToTable("Tickets");
+                });
 #pragma warning restore 612, 618
         }
     }

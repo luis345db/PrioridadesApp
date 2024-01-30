@@ -71,6 +71,12 @@ namespace PrioridadesApp.BLL
 				.AsNoTracking()
 				.FirstOrDefaultAsync(c => c.PriodidadID == prioridadId);
 		}
+		public async Task<Prioridades?> BuscarDescripcion(string description)
+		{
+			return await _contexto.Prioridades
+				.AsNoTracking()
+				.FirstOrDefaultAsync(p => p.Descripcion.ToLower() == description.ToLower());
+		}
 
 
 

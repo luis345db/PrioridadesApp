@@ -10,7 +10,7 @@ using PrioridadesApp.DAL;
 namespace PrioridadesApp.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240129025441_Tickets")]
+    [Migration("20240129174602_Tickets")]
     partial class Tickets
     {
         /// <inheritdoc />
@@ -70,6 +70,42 @@ namespace PrioridadesApp.Migrations
                     b.HasKey("PriodidadID");
 
                     b.ToTable("Prioridades");
+                });
+
+            modelBuilder.Entity("PrioridadesApp.Models.Tickets", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Fecha")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PriodidadID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SistemaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SolicitadoPor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TicketId");
+
+                    b.ToTable("Tickets");
                 });
 #pragma warning restore 612, 618
         }

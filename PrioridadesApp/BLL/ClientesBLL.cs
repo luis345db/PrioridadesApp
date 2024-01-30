@@ -72,5 +72,12 @@ public class ClientesBLL
 			.AsNoTracking()
 			.FirstOrDefaultAsync(c => c.ClienteId == clienteId);
 	}
+
+	public async Task<Clientes?> BuscarCliente(string nombre)
+	{
+		return await _contexto.Clientes
+			.AsNoTracking()
+			.FirstOrDefaultAsync(c => c.Nombres.ToLower() == nombre.ToLower());
+	}
 }
 

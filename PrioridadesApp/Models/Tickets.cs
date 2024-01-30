@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrioridadesApp.Models
 {
@@ -7,15 +8,20 @@ namespace PrioridadesApp.Models
 		[Key]
 		public int TicketId { get; set; }
 
-		[Required(ErrorMessage = "El campo {0} es requerido")]
-		public string Fecha { get; set; }
 
+		[Required(ErrorMessage = "El campo {0} es requerido")]
+		[DataType(DataType.Date)]
+		public DateTime Fecha { get; set; }
+
+		[ForeignKey("Clientes")]
 		[Required(ErrorMessage = "El campo {0} es requerido")]
 		public int ClienteId { get; set; }
 
+		[ForeignKey("Sistemas")]
 		[Required(ErrorMessage = "El campo {0} es requerido")]
 		public int SistemaId { get; set; }
 
+		[ForeignKey("Prioridades")]
 		[Required(ErrorMessage = "El campo {0} es requerido")]
 		public int PriodidadID { get; set; }
 
