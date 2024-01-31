@@ -1,4 +1,5 @@
 ﻿@page "/T_Details"
+
 @inject TicketsBLL ticketsBLL
 @attribute [StreamRendering]
 
@@ -9,11 +10,11 @@
     <div class="card shadow-lg">
 
         <div class="card-header">
-            <h3><strong>Consulta Personas</strong></h3>
+            <h3><strong>Consulta Ticket</strong></h3>
             <div class="d-flex align-items-start ">
 
 
-                <a href="/C_Create"><em>Crear</em></a>
+                <a href="/T_Create"><em>Crear</em></a>
 
             </div>
         </div>
@@ -51,8 +52,8 @@
                             <td>@item.SolicitadoPor</td>
                             <td>@item.Asunto</td>
                             <td>@item.Descripcion</td>
-                            <td><a href="/T_Edit/prioridadId=@item.TicketId"><em>Editar</em></a></td>
-                            <td><a href="/T_Delete/prioridadId=@item.TicketId"><em>Eliminar</em></a></td>
+                            <td><a href="/T_Edit/ticketId=@item.TicketId"><em>Editar</em></a></td>
+                            <td><a href="/T_Delete/ticketId=@item.TicketId"><em>Eliminar</em></a></td>
                         </tr>
                     }
                 </tbody>

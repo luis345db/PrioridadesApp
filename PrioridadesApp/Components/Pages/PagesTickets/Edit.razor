@@ -1,13 +1,17 @@
 ﻿@page "/T_Edit"
-
+@page "/T_Edit/ticketId={ticketId:int}"
 @inject TicketsBLL ticketsBLL
+@attribute [StreamRendering]
 @rendermode InteractiveServer
-
+@inject NavigationManager NavigationManager;
+@using System.Linq.Expressions
+@inject ClientesBLL clientesBLL;
+@inject PrioridadesBLL prioridadesBLL;
 
 <EditForm Model="ticket" OnValidSubmit="Crear">
     <div class="container">
         <div class="card shadow-lg">
-            @*Header*@
+           
             <div class="card-header">
                 <h3><strong>Editar</strong></h3>
                 <a href="/T_Details"><em>Details</em></a>
@@ -48,10 +52,14 @@
                 }
             </div>
             <div>
-                <label>SolicitadoPor:</label>
-                <InputText @bind-Value="ticket.SolicitadoPor" class="form-control"></InputText>
-
-
+                <label class="form-label" for="solicitado"><strong>Solicitado Por:</strong></label>
+                <InputSelect id="solicitado" class="form-select" @bind-Value="ticket.SolicitadoPor" @oninput="(e) => ActualizarClienteId(e.Value.ToString())">
+                    <option>------------------</option>
+                    @foreach (var clientes in clientesList)
+                    {
+                        <option value="@clientes.Nombres">@clientes.Nombres</option>
+                    }
+                </InputSelect>
             </div>
             <div>
                 <label>Asunto:</label>
@@ -59,11 +67,18 @@
 
 
             </div>
-            <div>
-                <label>Descripcion:</label>
-                <InputText @bind-Value="ticket.Descripcion" class="form-control"></InputText>
+            <div class="mb-3">
+                <div class="col-4">
 
-
+                    <label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
+                    <InputSelect id="descripcion" class="form-select" @bind-Value="ticket.Descripcion" @oninput="(e) => ActualizarPrioridadId(e.Value.ToString())">
+                        <option>------------------</option>
+                        @foreach (var prioridades in prioridadesList)
+                        {
+                            <option value="@prioridades.Descripcion">@prioridades.Descripcion</option>
+                        }
+                    </InputSelect>
+                </div>
             </div>
         </div>
         <div class="card-footer">
@@ -74,9 +89,24 @@
 
 
 @code {
-
+    [Parameter]
+    public int ticketId { get; set; }
     public Tickets ticket { get; set; } = new Tickets();
+    public List<Clientes> clientesList = new List<Clientes>();
+    public List<Prioridades> prioridadesList = new List<Prioridades>();
     private bool Existe = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        await Task.Delay(300);
+        Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
+        clientesList = await clientesBLL.GetList(criterioCliente);
+
+        Expression<Func<Prioridades, bool>> criterioPrioridad = prioridad => prioridad.PriodidadID > 0;
+        prioridadesList = await prioridadesBLL.GetList(criterioPrioridad);
+    }
+
 
     public async Task Buscar()
     {
@@ -102,6 +132,8 @@
 
     }
 
+
+
     public async Task Crear()
     {
         if (await Validar())
@@ -110,7 +142,37 @@
         }
         if (await ticketsBLL.Crear(this.ticket))
         {
-            this.Nuevo();
+            NavigationManager.NavigateTo("/tickets");
         }
     }
+
+    public async Task ActualizarClienteId(string valor)
+    {
+        if (valor != null)
+        {
+            var buscar = await clientesBLL.BuscarCliente(valor);
+            if (buscar != null)
+            {
+                var id = await clientesBLL.BuscarId(buscar.ClienteId);
+                if (id != null)
+                    ticket.ClienteId = id.ClienteId;
+            }
+        }
+    }
+
+    public async Task ActualizarPrioridadId(string valor)
+    {
+        if (valor != null)
+        {
+            var buscar = await prioridadesBLL.BuscarDescripcion(valor);//Busco la descripcion
+            if (buscar != null)
+            {
+                var id = await prioridadesBLL.BuscarId(buscar.PriodidadID);//Busco el Id
+                if (id != null)
+                    ticket.PriodidadID = id.PriodidadID;
+            }
+        }
+    }
+
+
 }

@@ -1,5 +1,5 @@
-﻿@page "/C_Delete"
-@page "/C_Delete/ticketId={ticketId:int}"
+﻿@page "/T_Delete"
+@page "/T_Delete/ticketId={ticketId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject TicketsBLL ticketsBLL;
@@ -43,7 +43,7 @@
 				<p class="mb-0">Descripcion: @ticket.Descripcion</p>
 			</div>
 			<button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-			<button type="button" class="btn btn-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+			<button type="button" class="btn btn-blue" @onclick="IrAPaginaDestino">Cancelar</button>
 		</div>
 
 	</div>

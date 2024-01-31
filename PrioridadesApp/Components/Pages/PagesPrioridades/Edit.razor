@@ -10,15 +10,15 @@
 <EditForm Model="prioridad" OnValidSubmit="Modificar" FormName="formularioEdit">
 	<div class="container">
 		<div class="card shadow-lg">
-			@*Header*@
+			
 			<div class="card-header">
 				<h3><strong>Editar</strong></h3>
 				<a href="/P_Details"><em>Details</em></a>
 			</div>
-			@*Body*@
+			
 			<div class="card-body">
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-				@*Id*@
+				
 				<div class="mb-3">
 					<div class="col-4">
 						<label class="form-label" for="prioridadId"><strong>Id:</strong></label>
@@ -28,10 +28,10 @@
 						</div>
 					</div>
 				</div>
-				@*Nombre*@
+				
 				<div class="mb-3">
 					<div class="col-4">
-						<label class="form-label" for="descripcion"><strong>Nombre:</strong></label>
+						<label class="form-label" for="descripcion"><strong>Descripcion:</strong></label>
 						<InputText id="descripcion" class="form-control" @bind-Value="prioridad.Descripcion" placeholder="Escribe una descripcion "></InputText>
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 					</div>
 				</div>
 			</div>
-			@*Footer*@
+			
 			<div class="card-footer d-flex justify-content-center">
 				<button type="submit" class="btn btn-outline-primary">Modificar</button>
 			</div>
