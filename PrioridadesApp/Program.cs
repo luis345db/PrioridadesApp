@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<PrioridadesBLL>();
     builder.Services.AddScoped<ClientesBLL>();
+	builder.Services.AddScoped<TicketsBLL>();
 
 }
 var app = builder.Build();

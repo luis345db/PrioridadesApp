@@ -1,0 +1,134 @@
+﻿@page "/C_Edit"
+@page "/C_Edit/clienteId={clienteId:int}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject ClientesBLL clientesBLL;
+
+
+<PageTitle>Editar</PageTitle>
+
+<EditForm Model="cliente" OnValidSubmit="Modificar" FormName="formularioEdit">
+	<div class="container">
+		<div class="card shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>Editar</strong></h3>
+				<a href="/P_Details"><em>Details</em></a>
+			</div>
+
+
+				
+				<div class="card-body">
+					<label>IDCliente:</label>
+					<div class="input-group">
+						<InputNumber @bind-Value="cliente.ClienteId" class="id-input"></InputNumber>
+						<button type="button" class="bi bi-binoculars-fill" @onclick="Buscar"></button>
+					</div>
+					<div>
+						<label>Nombres:</label>
+						<InputText @bind-Value="cliente.Nombres" class="form-control"></InputText>
+
+
+						@if (ExisteN)
+						{
+							<p class="text-danger">Ya existe un cliente con este Nombre.</p>
+						}
+					</div>
+					<div>
+						<label>Telefono:</label>
+						<InputText @bind-Value="cliente.Telefono" class="form-control"></InputText>
+
+
+					</div>
+					<div>
+						<label>Celular:</label>
+						<InputText @bind-Value="cliente.Celular" class="form-control"></InputText>
+					</div>
+					<div>
+						<label>RNC:</label>
+						<InputText @bind-Value="cliente.RNC" class="form-control"></InputText>
+
+						@if (ExisteR)
+						{
+							<p class="text-danger">Ya existe un cliente con este RNC.</p>
+						}
+					</div>
+					<div>
+						<label>Email:</label>
+						<InputText @bind-Value="cliente.Email" class="form-control"></InputText>
+
+
+					</div>
+					<div>
+						<label>Direccion:</label>
+						<InputText @bind-Value="cliente.Direccion" class="form-control"></InputText>
+
+
+					</div>
+				</div>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-success">Crear <i class="bi bi-floppy-fill" /></button>
+				</div>
+			</div>
+	</div>
+</EditForm>
+
+@code {
+
+	[Parameter]
+	public int clienteId { get; set; }
+	public Clientes cliente { get; set; } = new Clientes();
+	public string mensaje { get; set; } = string.Empty;
+	private bool Existe = false;
+	private bool ExisteN = false;
+	private bool ExisteR = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (clienteId > 0)
+			cliente = await clientesBLL.Buscar(clienteId);
+	}
+
+	public async Task Modificar()
+	{
+		if (await Validar())
+			mensaje = "Error, este nombre no esta disponible";
+		else
+		{
+			var modificar = await clientesBLL.Guardar(cliente);
+			if (modificar)
+				mensaje = "Los datos se ha actualizado con exito";
+			else
+				mensaje = "Los datos no han podido ser actualizados";
+		}
+	}
+
+	public async Task<bool> Validar()
+	{
+		ExisteN = (await clientesBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
+			&& c.ClienteId != cliente.ClienteId)).Any();
+		ExisteR = (await clientesBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
+				&& c.ClienteId != cliente.ClienteId)).Any();
+		return ExisteN || ExisteN;
+	}
+
+	public async Task Buscar()
+	{
+		if (cliente.ClienteId <= 0)
+			mensaje = "No se aceptan Id menores que 1";
+
+		else
+		{
+			var buscar = await clientesBLL.Buscar(cliente.ClienteId);
+			if (buscar != null)
+			{
+				cliente = buscar;
+				mensaje = "La persona ha sido encontrada con exito";
+			}
+			else
+				mensaje = $"No existe persona con el id {cliente.ClienteId}";
+		}
+	}
+
+}

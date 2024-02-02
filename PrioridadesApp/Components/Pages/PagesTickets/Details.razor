@@ -1,0 +1,79 @@
+﻿@page "/T_Details"
+
+@inject TicketsBLL ticketsBLL
+@attribute [StreamRendering]
+
+<PageTitle>Consulta Tickets</PageTitle>
+
+<div class=" container">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header">
+            <h3><strong>Consulta Ticket</strong></h3>
+            <div class="d-flex align-items-start ">
+
+
+                <a href="/T_Create"><em>Crear</em></a>
+
+            </div>
+        </div>
+
+
+
+        <div class="table-responsive">
+
+
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>TicketID</th>
+                        <th>Fecha</th>
+                        <th>ClienteID</th>
+                        <th>SistemaId</th>
+                        <th>PrioridadID</th>
+                        <th>SolicitadoPor</th>
+                        <th>Asunto</th>
+                        <th>Descripcion</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ListaTickets)
+                    {
+                        <tr>
+                            <td>@item.TicketId</td>
+                            <td>@item.Fecha</td>
+                            <td>@item.ClienteId</td>
+                            <td>@item.SistemaId</td>
+                            <td>@item.PriodidadID</td>
+                            <td>@item.SolicitadoPor</td>
+                            <td>@item.Asunto</td>
+                            <td>@item.Descripcion</td>
+                            <td><a href="/T_Edit/ticketId=@item.TicketId"><em>Editar</em></a></td>
+                            <td><a href="/T_Delete/ticketId=@item.TicketId"><em>Eliminar</em></a></td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public Tickets tickets { get; set; } = new Tickets();
+
+    public List<Tickets> ListaTickets { get; set; } = new List<Tickets>();
+
+    protected override async void OnInitialized()
+    {
+        ListaTickets = await ticketsBLL.GetList(l => true);
+    }
+
+
+}

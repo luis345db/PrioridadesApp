@@ -1,0 +1,84 @@
+﻿@page "/C_Delete"
+@page "/C_Delete/clienteId={clienteId:int}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject ClientesBLL clientesBLL;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Eliminar</PageTitle>
+
+<div class="container">
+	<div class="card shadow-lg">
+
+		<div class="card-header">
+			<h3><strong>Delete</strong></h3>
+		</div>
+
+		<div class="card-body col-5">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<h3><strong>¿Estas seguro de que quieres eliminar este Cliente?</strong></h3>
+
+			<div class="mb-1">
+				<p class="mb-0">Id: @cliente.ClienteId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Nombres: @cliente.Nombres</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Telefono: @cliente.Telefono</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Celular: @cliente.Celular</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">RNC: @cliente.RNC</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Email: @cliente.Email</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Direcciom: @cliente.Direccion</p>
+			</div>
+			<button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+			<button type="button" class="btn btn-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+		</div>
+
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int clienteId { get; set; }
+	public Clientes cliente { get; set; } = new Clientes();
+	private string Mensaje;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (clienteId > 0)
+			cliente = await clientesBLL.BuscarId(clienteId);
+	}
+
+
+	public async Task Eliminar()
+	{
+		var eliminar = await clientesBLL.Eliminar(cliente);
+		if (eliminar)
+		{
+			Mensaje = "El cliente se ha eliminado con exito";
+			await Task.Delay(2000);
+			IrAPaginaDestino();
+		}
+		else
+			Mensaje = "No se ha podido eliminar al cliente correctamente";
+	}
+	void Nuevo()
+	{
+		this.cliente = new Clientes();
+	}
+	void IrAPaginaDestino()
+	{
+		NavigationManager.NavigateTo("/C_Details");
+	}
+}

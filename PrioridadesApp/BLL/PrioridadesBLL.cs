@@ -31,7 +31,7 @@ namespace PrioridadesApp.BLL
             return await _contexto.SaveChangesAsync() > 0;
         }
 
-        public async Task <bool> Guardar(Prioridades prioridad)
+        public async Task <bool> Crear(Prioridades prioridad)
         {
             if (! await  Existe(prioridad.PriodidadID))
             {
@@ -43,11 +43,11 @@ namespace PrioridadesApp.BLL
             }
         }
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> Eliminar(Prioridades prioridad)
         {
-            var priority = _contexto.Prioridades.Find(id);
-           _contexto.Prioridades.Remove(priority);
-            return await _contexto.SaveChangesAsync() > 0;
+            var priority = await _contexto.Prioridades.Where(p => p.PriodidadID==prioridad.PriodidadID).ExecuteDeleteAsync();
+           
+            return priority > 0;
         }
 
         public async Task<Prioridades?> Buscar(int PrioridadId)
@@ -65,8 +65,21 @@ namespace PrioridadesApp.BLL
                 .ToListAsync();
         }
 
+		public async Task<Prioridades?> BuscarId(int prioridadId)
+		{
+			return await _contexto.Prioridades
+				.AsNoTracking()
+				.FirstOrDefaultAsync(c => c.PriodidadID == prioridadId);
+		}
+		public async Task<Prioridades?> BuscarDescripcion(string description)
+		{
+			return await _contexto.Prioridades
+				.AsNoTracking()
+				.FirstOrDefaultAsync(p => p.Descripcion.ToLower() == description.ToLower());
+		}
 
-        
-    }
+
+
+	}
 
 }
