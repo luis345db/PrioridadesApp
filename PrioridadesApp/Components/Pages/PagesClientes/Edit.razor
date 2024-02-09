@@ -2,7 +2,7 @@
 @page "/C_Edit/clienteId={clienteId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject ClientesBLL clientesBLL;
+@inject ClientesServices clientesServices;
 
 
 <PageTitle>Editar</PageTitle>
@@ -10,7 +10,7 @@
 <EditForm Model="cliente" OnValidSubmit="Modificar" FormName="formularioEdit">
 	<div class="container">
 		<div class="card shadow-lg">
-			@*Header*@
+			
 			<div class="card-header">
 				<h3><strong>Editar</strong></h3>
 				<a href="/P_Details"><em>Details</em></a>
@@ -87,7 +87,7 @@
 	{
 		await Task.Delay(500);
 		if (clienteId > 0)
-			cliente = await clientesBLL.Buscar(clienteId);
+			cliente = await clientesServices.Buscar(clienteId);
 	}
 
 	public async Task Modificar()
@@ -96,7 +96,7 @@
 			mensaje = "Error, este nombre no esta disponible";
 		else
 		{
-			var modificar = await clientesBLL.Guardar(cliente);
+			var modificar = await clientesServices.Guardar(cliente);
 			if (modificar)
 				mensaje = "Los datos se ha actualizado con exito";
 			else
@@ -106,9 +106,9 @@
 
 	public async Task<bool> Validar()
 	{
-		ExisteN = (await clientesBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
+		ExisteN = (await clientesServices.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
 			&& c.ClienteId != cliente.ClienteId)).Any();
-		ExisteR = (await clientesBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
+		ExisteR = (await clientesServices.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
 				&& c.ClienteId != cliente.ClienteId)).Any();
 		return ExisteN || ExisteN;
 	}
@@ -120,7 +120,7 @@
 
 		else
 		{
-			var buscar = await clientesBLL.Buscar(cliente.ClienteId);
+			var buscar = await clientesServices.Buscar(cliente.ClienteId);
 			if (buscar != null)
 			{
 				cliente = buscar;

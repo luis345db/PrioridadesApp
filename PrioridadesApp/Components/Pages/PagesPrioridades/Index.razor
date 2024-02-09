@@ -1,5 +1,5 @@
 ﻿@page "/prioridades"
-@inject PrioridadesBLL prioridadesBLL
+@inject PrioridadesServices prioridadesServices
 @attribute [StreamRendering]
 
 <PageTitle>Consulta Prioridades</PageTitle>
@@ -60,7 +60,7 @@
 
     protected override async void OnInitialized()
     {
-        ListaPrioridades = await prioridadesBLL.GetList(l => true);
+        ListaPrioridades = await prioridadesServices.GetList(l => true);
     }
 
 

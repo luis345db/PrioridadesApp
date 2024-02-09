@@ -1,7 +1,7 @@
 ﻿@page "/R_Clientes"
 @page "/R_Clientes/{ClienteID:int}";
 @rendermode InteractiveServer
-@inject ClientesBLL clientesBLL;
+@inject ClientesServices clientesBLL;
 
 @*<EditForm Model="cliente" OnValidSubmit="Guardar">
     <div class="card">

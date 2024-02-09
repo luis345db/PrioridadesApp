@@ -1,5 +1,5 @@
 ﻿@page "/tickets"
-@inject TicketsBLL ticketsBLL
+@inject TicketsServices ticketsServices
 @attribute [StreamRendering]
 
 <PageTitle>Consulta Tickets</PageTitle>
@@ -72,7 +72,7 @@
 
     protected override async void OnInitialized()
     {
-        ListaTickets = await ticketsBLL.GetList(l => true);
+        ListaTickets = await ticketsServices.GetList(l => true);
     }
 
 

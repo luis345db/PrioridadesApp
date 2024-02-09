@@ -2,7 +2,7 @@
 @page "/T_Delete/ticketId={ticketId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject TicketsBLL ticketsBLL;
+@inject TicketsServices ticketsServices;
 @inject NavigationManager NavigationManager;
 
 <PageTitle>Eliminar</PageTitle>
@@ -59,12 +59,12 @@
 	{
 		await Task.Delay(500);
 		if (ticketId > 0)
-			ticket = await ticketsBLL.BuscarId(ticketId);
+			ticket = await ticketsServices.BuscarId(ticketId);
 	}
 
 	public async Task Eliminar()
 	{
-		var eliminar = await ticketsBLL.Eliminar(ticket);
+		var eliminar = await ticketsServices.Eliminar(ticket);
 		if (eliminar)
 		{
 			Mensaje = "ha sido eliminado con exito";

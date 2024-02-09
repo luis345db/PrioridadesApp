@@ -3,12 +3,12 @@ using PrioridadesApp.DAL;
 using PrioridadesApp.Models;
 using System.Linq.Expressions;
 
-namespace PrioridadesApp.BLL;
-public class ClientesBLL
+namespace PrioridadesApp.Services;
+public class ClientesServices
 {
     private readonly Contexto _contexto;
 
-    public ClientesBLL(Contexto contexto)
+    public ClientesServices(Contexto contexto)
     {
         _contexto = contexto;
     }

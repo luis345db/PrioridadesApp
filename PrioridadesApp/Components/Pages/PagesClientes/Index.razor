@@ -1,5 +1,5 @@
 ﻿@page "/clientes"
-@inject ClientesBLL clientesBLL
+@inject ClientesServices clientesServices
 @attribute [StreamRendering]
 
 <PageTitle>Consulta Clientes</PageTitle>
@@ -68,7 +68,7 @@
 
     protected override async void OnInitialized()
     {
-        ListaClientes = await clientesBLL.GetList(l => true);
+        ListaClientes = await clientesServices.GetList(l => true);
     }
 
 
