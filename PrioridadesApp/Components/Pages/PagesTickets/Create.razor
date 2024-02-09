@@ -1,10 +1,10 @@
 ﻿@page "/T_Create"
 @using System.Linq.Expressions
 @rendermode InteractiveServer
-@inject TicketsBLL ticketsBLL
+@inject TicketsServices ticketsServices
 @attribute [StreamRendering]
-@inject ClientesBLL clientesBLL;
-@inject PrioridadesBLL prioridadesBLL;
+@inject ClientesServices clientesServices;
+@inject PrioridadesServices prioridadesServices;
 @inject NavigationManager NavigationManager;
 
 
@@ -96,16 +96,16 @@
 
         await Task.Delay(300);
         Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
-        clientesList = await clientesBLL.GetList(criterioCliente);
+		clientesList = await clientesServices.GetList(criterioCliente);
 
         Expression<Func<Prioridades, bool>> criterioPrioridad = prioridad => prioridad.PriodidadID > 0;
-        prioridadesList = await prioridadesBLL.GetList(criterioPrioridad);
+		prioridadesList = await prioridadesServices.GetList(criterioPrioridad);
     }
     
     
     public async Task Buscar()
 	{
-        var ticketEncontrado = await ticketsBLL.Buscar(ticket.TicketId);
+		var ticketEncontrado = await ticketsServices.Buscar(ticket.TicketId);
         if (ticketEncontrado != null)
 		{
             this.ticket = ticketEncontrado;
@@ -120,7 +120,7 @@
     public async Task<bool> Validar()
 			{
         
-        Existe = (await ticketsBLL.GetList(c => c.PriodidadID! == ticket.PriodidadID!
+		Existe = (await ticketsServices.GetList(c => c.PriodidadID! == ticket.PriodidadID!
        && c.TicketId != ticket.TicketId)).Any();
         return Existe;
 
@@ -135,7 +135,7 @@
 			{
             return;
 	    }
-        if (await ticketsBLL.Crear(this.ticket))
+		if (await ticketsServices.Crear(this.ticket))
 	    {
 		NavigationManager.NavigateTo("/tickets");
 	    }
@@ -145,10 +145,10 @@
 	{
 		if (valor != null)
 		{
-			var buscar = await clientesBLL.BuscarCliente(valor);
+			var buscar = await clientesServices.BuscarCliente(valor);
 			if (buscar != null)
 			{
-				var id = await clientesBLL.BuscarId(buscar.ClienteId);
+				var id = await clientesServices.BuscarId(buscar.ClienteId);
 				if (id != null)
 					ticket.ClienteId = id.ClienteId;
 			}
@@ -159,10 +159,10 @@
 	{
 		if (valor != null)
 		{
-			var buscar = await prioridadesBLL.BuscarDescripcion(valor);//Busco la descripcion
+			var buscar = await prioridadesServices.BuscarDescripcion(valor);//Busco la descripcion
 			if (buscar != null)
 			{
-				var id = await prioridadesBLL.BuscarId(buscar.PriodidadID);//Busco el Id
+				var id = await prioridadesServices.BuscarId(buscar.PriodidadID);//Busco el Id
 				if (id != null)
 					ticket.PriodidadID = id.PriodidadID;
 			}

@@ -1,6 +1,6 @@
 ﻿@page "/C_Create"
 
-@inject ClientesBLL clienteBLL
+@inject ClientesServices clienteServices
 @rendermode InteractiveServer
 
 
@@ -78,7 +78,7 @@
     private bool ExisteR = false;
     public async Task Buscar()
     {
-        var clienteEncontrado = await clienteBLL.Buscar(cliente.ClienteId);
+        var clienteEncontrado = await clienteServices.Buscar(cliente.ClienteId);
         if (clienteEncontrado != null)
         {
             this.cliente = clienteEncontrado;
@@ -92,9 +92,9 @@
 
     public async Task<bool> Validar()
     {
-        ExisteN = (await clienteBLL.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
+        ExisteN = (await clienteServices.GetList(c => c.Nombres!.ToLower() == cliente.Nombres!.ToLower()
          && c.ClienteId != cliente.ClienteId)).Any();
-        ExisteR = (await clienteBLL.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
+        ExisteR = (await clienteServices.GetList(c => c.RNC!.ToLower() == cliente.RNC!.ToLower()
        && c.ClienteId != cliente.ClienteId)).Any();
         return ExisteN || ExisteN;
 
@@ -107,7 +107,7 @@
         {
             return;
         }
-        if (await clienteBLL.Guardar(this.cliente))
+        if (await clienteServices.Guardar(this.cliente))
         {
             this.Nuevo();
         }

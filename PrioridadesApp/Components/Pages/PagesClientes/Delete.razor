@@ -2,7 +2,7 @@
 @page "/C_Delete/clienteId={clienteId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject ClientesBLL clientesBLL;
+@inject ClientesServices clientesServices;
 @inject NavigationManager NavigationManager;
 
 <PageTitle>Eliminar</PageTitle>
@@ -57,13 +57,13 @@
 	{
 		await Task.Delay(500);
 		if (clienteId > 0)
-			cliente = await clientesBLL.BuscarId(clienteId);
+			cliente = await clientesServices.BuscarId(clienteId);
 	}
 
 
 	public async Task Eliminar()
 	{
-		var eliminar = await clientesBLL.Eliminar(cliente);
+		var eliminar = await clientesServices.Eliminar(cliente);
 		if (eliminar)
 		{
 			Mensaje = "El cliente se ha eliminado con exito";

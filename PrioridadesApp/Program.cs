@@ -1,7 +1,7 @@
 using PrioridadesApp.Components;
 using Microsoft.EntityFrameworkCore;
 using PrioridadesApp.DAL;
-using PrioridadesApp.BLL;
+using PrioridadesApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -13,9 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
-    builder.Services.AddScoped<PrioridadesBLL>();
-    builder.Services.AddScoped<ClientesBLL>();
-	builder.Services.AddScoped<TicketsBLL>();
+    builder.Services.AddScoped<PrioridadesServices>();
+    builder.Services.AddScoped<ClientesServices>();
+	builder.Services.AddScoped<TicketsServices>();
 
 }
 var app = builder.Build();

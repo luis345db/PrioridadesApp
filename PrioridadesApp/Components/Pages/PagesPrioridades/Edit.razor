@@ -2,7 +2,7 @@
 @page "/P_Edit/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject PrioridadesBLL prioridadesBLL;
+@inject PrioridadesServices prioridadesServices;
 
 
 <PageTitle>Editar</PageTitle>
@@ -65,7 +65,7 @@
 	{
 		await Task.Delay(500);
 		if (prioridadId > 0)
-			prioridad = await prioridadesBLL.Buscar(prioridadId);
+			prioridad = await prioridadesServices.Buscar(prioridadId);
 	}
 
 	public async Task Modificar()
@@ -74,7 +74,7 @@
 			mensaje = "Error, este nombre no esta disponible";
 		else
 		{
-			var modificar = await prioridadesBLL.Crear(prioridad);
+			var modificar = await prioridadesServices.Crear(prioridad);
 			if (modificar)
 				mensaje = "Los datos se ha actualizado con exito";
 			else
@@ -84,7 +84,7 @@
 
 	public async Task<bool> Validar()
 	{
-		Existe = (await prioridadesBLL.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower()
+		Existe = (await prioridadesServices.GetList(p => p.Descripcion!.ToLower() == prioridad.Descripcion!.ToLower()
 			&& p.PriodidadID != prioridad.PriodidadID)).Any();
 		return Existe;
 	}
@@ -96,7 +96,7 @@
 
 		else
 		{
-			var buscar = await prioridadesBLL.Buscar(prioridad.PriodidadID);
+			var buscar = await prioridadesServices.Buscar(prioridad.PriodidadID);
 			if (buscar != null)
 			{
 				prioridad = buscar;
